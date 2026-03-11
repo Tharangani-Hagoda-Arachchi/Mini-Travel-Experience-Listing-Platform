@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { User } from "../models/user.model.js";
-import { createAccessToken, createRefreshToken } from "../utils/token.utils.js";
+import { createAccessToken, createRefreshToken, verifyTokens } from "../utils/token.utils.js";
 
 const cookieOptions = {
     httpOnly: true,
@@ -88,3 +88,46 @@ export const userLogin = async (req, res, next) => {
         res.status(500).json({ message: "internal server Error", error: error.message })
     }
 }
+
+//user logout logic
+export const logout = async (req, res, next) => {
+    try {
+        const token = req.cookies?.refreshToken || req.body?.refreshToken || req.query?.refreshToken;
+
+        //check token availability
+        if (!token || typeof token !== "string") {
+            return res.status(400).json({
+                message: "No refresh token provided",
+            })
+        }
+
+        // decode token 
+        let decoded;
+        try {
+            decoded = verifyTokens(token, process.env.REFRESH_SCRET);
+        } catch (err) {
+            decoded = null;
+        }
+
+        // remove token from DB accoding user
+        if (decoded) {
+            const user = await User.findById(decoded.id);
+            if (user) {
+                user.refreshToken = user.refreshToken.filter((rt) => rt !== token);
+                await user.save();
+            }
+        }
+
+        // clear cookie
+        res.clearCookie("refreshToken", cookieOptions);
+
+        // response
+        return res.status(200).json({
+            status: "Success",
+            message: "Logout successfully",
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: "internal server Error", error: error.message })
+    }
+};

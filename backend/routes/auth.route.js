@@ -1,5 +1,5 @@
 import express from "express";
-import { registerUser, userLogin } from "../controllers/auth.controller.js";
+import { logout, registerUser, userLogin } from "../controllers/auth.controller.js";
 
 const authRouter = express.Router();
 
@@ -7,6 +7,8 @@ const authRouter = express.Router();
 authRouter.post('/register', registerUser)
 //login user route
 authRouter.post('/login', userLogin)
+//logout user route
+authRouter.post('/logout', logout)
 
 
 
