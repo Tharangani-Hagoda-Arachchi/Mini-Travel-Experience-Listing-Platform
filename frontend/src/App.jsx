@@ -1,9 +1,15 @@
+import Navbar from "./components/Navbar/Navbar.jsx";
+
 function App() {
 
 
   return (
     <>
-      <h1>Mini Travel Experience Listing Platform</h1>
+    <div className="app">
+      <Navbar />
+
+    </div>
+
     </>
   )
 }
