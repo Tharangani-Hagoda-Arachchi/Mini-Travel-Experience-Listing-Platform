@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { TravelEvent } from "../models/travelEvents.model.js";
 import { User } from "../models/user.model.js";
 
@@ -194,6 +195,39 @@ export const getEventsByCreatedBy = async (req, res, next) => {
             status: "Success",
             message: "Fetch Travel Events Successfully",
             data: eventsByCreatedBy
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+};
+
+//delete travel event by id
+export const deleteTravelEvent = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        // check required field
+        if (!id) {
+            return res.status(400).json({ message: "Travel event id is Required" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                message: "Invalid event ID"
+            });
+        }
+
+        // search for travel event by id and delete
+        const deletedEvent = await TravelEvent.findByIdAndDelete(id);
+
+        if (!deletedEvent) {
+            return res.status(404).json({ message: "Travel event not found" });
+        }
+
+        res.status(200).json({
+            status: "Success",
+            message: "Travel Event Deleted Successfully"
         });
 
     } catch (error) {
