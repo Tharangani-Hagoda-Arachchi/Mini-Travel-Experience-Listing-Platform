@@ -9,9 +9,15 @@ import travelEventRouter from './routes/travelEvent.routes.js';
 const app = express();
 
 app.use(express.json());
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://mini-travel-experience-listing-plat-pearl.vercel.app"
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL, // dynamic frontend URL
-  credentials: true,
+  origin: allowedOrigins,
+  credentials: true
 }));
 
 app.use(cookieParser());
