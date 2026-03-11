@@ -1,0 +1,38 @@
+/* Home.css */
+
+/* Full page layout */
+.home-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+}
+
+/* Fixed navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px; /* Adjust as needed */
+  background-color: #12114a;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1000;
+}
+
+/* Scrollable content */
+.content {
+  margin-top: 70px; /* Same as navbar height */
+  padding: 20px;
+  flex: 1; /* Takes remaining space */
+  overflow-y: auto; /* Vertical scroll only */
+}
+
+/* Grid of cards */
+.cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}

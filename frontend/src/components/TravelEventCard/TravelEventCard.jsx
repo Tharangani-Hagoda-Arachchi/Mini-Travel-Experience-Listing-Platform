@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { getAllExperiences } from '../../services/api';
+import './TravelEventCard.css';
+import { useNavigate } from 'react-router-dom';
 
 const TravelEventCard = () => {
 
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const navigate = useNavigate();
+
+    const goToDetail = (id) => {
+        navigate(`/event/${id}`);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,16 +29,16 @@ const TravelEventCard = () => {
         fetchData();
     }, []);
 
-    if (loading) return <p style={{ color: 'orange' }}>Loading experiences...</p>;
+    if (loading) return <p style={{ color: 'orange' }}>Loading events..</p>;
 
     return (
         <div className="event-list-container">
             <h1>Travel Events</h1>
-            {experiences.length === 0 && <p>No event found.</p>}
+            {events.length === 0 && <p>No event found.</p>}
 
             <div className="event-cards">
                 {events.map((evnt) => (
-                    <div className="event-card" key={evnt._id} 
+                    <div className="event-card" key={evnt._id} onClick={() => goToDetail(evnt._id)}
                         style={{ cursor: 'pointer' }}>
                         <img
                             src={`http://localhost:4000${evnt.images[0]}`}

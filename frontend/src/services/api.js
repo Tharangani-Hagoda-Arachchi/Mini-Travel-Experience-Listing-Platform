@@ -83,7 +83,7 @@ export const createTravelEvent = async (data, token) => {
             createdBy: data.createdBy,
             image: data.image
         };
-        const response = await API.post(`/experiences`, payload, {
+        const response = await API.post(`/events`, payload, {
 
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -126,7 +126,7 @@ export const getAllExperiences = async () => {
 // Get single travel experience by ID (no auth)
 export const fetchTravelExperienceById = async (id) => {
     try {
-        const response = await API.get(`/experiences/details/${id}`, {
+        const response = await API.get(`/events/details/${id}`, {
             headers: { "Content-Type": "application/json" }
         });
 
@@ -142,10 +142,10 @@ export const fetchTravelExperienceById = async (id) => {
     }
 };
 
-// Get experiences by user id (createdBy)
-export const getExperiencesByCreatedBy = async (userId, token) => {
+// Get event by user id (createdBy)
+export const getEventsByCreatedBy = async (userId, token) => {
     try {
-        const res = await API.get(`/experiences/${userId}`, {
+        const res = await API.get(`/events/${userId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -160,7 +160,7 @@ export const getExperiencesByCreatedBy = async (userId, token) => {
 // // Delete travel experience
 export const deleteTravelExperience = async (id, token) => {
     try {
-        const res = await API.delete(`/experiences/${id}`, {
+        const res = await API.delete(`/events/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -174,8 +174,8 @@ export const deleteTravelExperience = async (id, token) => {
 };
 
 
-// Update travel experience
-export const updateTravelExperience = async (id, data, imageFile, token) => {
+// Update travel events
+export const updateTravelEvent = async (id, data, imageFile, token) => {
     try {
         const formData = new FormData();
         formData.append('title', data.title);
@@ -187,7 +187,7 @@ export const updateTravelExperience = async (id, data, imageFile, token) => {
             formData.append('image', imageFile);
         }
 
-        const res = await API.put(`/experiences/${id}`, formData, {
+        const res = await API.put(`/events/${id}`, formData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',

@@ -71,7 +71,7 @@ export const fetchTravelEvents = async (req, res, next) => {
         }
 
         // format response
-        const formattedEvents = travelEvents.map(event => {
+        const formattedEvents = travelEvents.map(exp => {
 
             const createdTime = new Date(exp.createdAt);
             const now = new Date();
@@ -118,20 +118,18 @@ export const fetchTravelEvents = async (req, res, next) => {
 };
 
 //fetch travel events by  id
-export const fetchTravelEventById = async (req, res, next) => {
+export const fetchTravelEventById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Find travel experience by ID and populate user first + last name
         const exp = await TravelEvent
-            .findById({ _id: id })
+            .findById(id)
             .populate("createdBy", "userFirstName userLastName");
 
-        if (!events) {
+        if (!exp) {
             return res.status(404).json({ message: "Travel event not found" });
         }
 
-        // Calculate posted time
         const createdTime = new Date(exp.createdAt);
         const now = new Date();
 
@@ -141,15 +139,11 @@ export const fetchTravelEventById = async (req, res, next) => {
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
         let postedTime = "";
-        if (diffMinutes < 60) {
-            postedTime = `Posted ${diffMinutes} minute(s) ago`;
-        } else if (diffHours < 24) {
-            postedTime = `Posted ${diffHours} hour(s) ago`;
-        } else {
-            postedTime = `Posted ${diffDays} day(s) ago`;
-        }
 
-        // Format response
+        if (diffMinutes < 60) postedTime = `Posted ${diffMinutes} minute(s) ago`;
+        else if (diffHours < 24) postedTime = `Posted ${diffHours} hour(s) ago`;
+        else postedTime = `Posted ${diffDays} day(s) ago`;
+
         const formattedEvent = {
             _id: exp._id,
             title: exp.title,
@@ -157,17 +151,20 @@ export const fetchTravelEventById = async (req, res, next) => {
             description: exp.description,
             price: exp.price,
             images: exp.images,
-            createdBy: `${exp.createdBy.userFirstName} ${exp.createdBy.userLastName}`,
+            createdBy: exp.createdBy
+                ? `${exp.createdBy.userFirstName} ${exp.createdBy.userLastName}`
+                : "Unknown User",
             postedTime
         };
 
         res.status(200).json({
             status: "Success",
-            message: "Travel Event fetched successfully",
             data: formattedEvent
         });
 
     } catch (error) {
+        console.error("Fetch event by ID error:", error);
+
         res.status(500).json({
             message: "Internal server error",
             error: error.message
@@ -236,22 +233,44 @@ export const deleteTravelEvent = async (req, res, next) => {
 };
 
 //update travel event by id
+import fs from "fs";
+import path from "path";
+
+// Update travel event by ID
 export const updateTravelEvent = async (req, res, next) => {
     try {
         const { _id } = req.params;
         const { title, location, description, price } = req.body;
 
-        // check required field
         if (!_id) {
-            return res.status(400).json({ message: "Travel event id is Required" });
+            return res.status(400).json({ message: "Travel event id is required" });
         }
 
-        // search for travel experience by id and update
-        const updatedEvent = await TravelEvent.findByIdAndUpdate(_id, { title, location, description, price }, { new: true });
-
-        if (!updatedEvent) {
+        // Find the existing event
+        const event = await TravelEvent.findById(_id);
+        if (!event) {
             return res.status(404).json({ message: "Travel event not found" });
         }
+
+        // Update fields
+        event.title = title || event.title;
+        event.location = location || event.location;
+        event.description = description || event.description;
+        event.price = price || event.price;
+
+        // Handle image update if a new file is uploaded
+        if (req.file) {
+            // Delete old image if exists
+            if (event.image) {
+                fs.unlink(path.join(__dirname, "..", "uploads", event.image), (err) => {
+                    if (err) console.log("Failed to delete old image:", err);
+                });
+            }
+            event.image = req.file.filename; // assuming multer stores filename
+        }
+
+        // Save updated event
+        const updatedEvent = await event.save();
 
         res.status(200).json({
             status: "Success",

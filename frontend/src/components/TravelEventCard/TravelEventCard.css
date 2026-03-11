@@ -1,6 +1,9 @@
 .event-list-container {
     padding: 20px;
 }
+h1{
+ padding: 20px;
+}
 
 .event-cards {
     display: grid;

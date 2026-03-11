@@ -1,0 +1,80 @@
+.signin {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: #00000090;
+    display: grid;
+}
+
+.signin-container {
+    place-self: center;
+    width: max(23vw, 330px);
+    color: #808080;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 25px 30px;
+    border-radius: 8px;
+    font-size: 14px;
+    animation: fadeIn 0.5s;
+}
+
+.signin-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #12114a;
+}
+
+.signin-title img {
+    width: 16px;
+    cursor: pointer;
+
+}
+
+.signin-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.signin-inputs input, .signin-inputs select {
+    outline: none;
+    border: 1px solid #12114a;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.signin-container button {
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    background-color: #12114a;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.signin-condition {
+    display: flex;
+    align-items: start;
+    gap: 8px;
+    margin-top: -15px;
+}
+
+.signin-condition input {
+    margin-top: 5px;
+}
+
+.signin p span {
+    color: #12114a;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.error {
+    color: red;
+    font-weight: lighter;
+}

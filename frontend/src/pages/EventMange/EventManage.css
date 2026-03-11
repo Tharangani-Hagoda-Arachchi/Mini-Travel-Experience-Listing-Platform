@@ -1,0 +1,89 @@
+/* Travel List Header */
+.travel-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #12114a, #35348e);
+    padding: 30px 25px;
+    border-radius: 10px;
+    margin: 20px;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    flex-wrap: wrap;
+    /* allow wrapping on smaller screens */
+}
+
+.header-text h1 {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.header-text p {
+    font-size: 15px;
+    opacity: 0.85;
+}
+
+.add-travel-btn {
+    background-color: #ffffff;
+    color: #12114a;
+    border: none;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-travel-btn:hover {
+    background-color: #f2f2f2;
+    transform: translateY(-2px);
+}
+
+/* ===== RESPONSIVE STYLES ===== */
+@media (max-width: 768px) {
+    .travel-list-header {
+        padding: 20px 15px;
+        margin: 15px;
+    }
+
+    .header-text h1 {
+        font-size: 24px;
+    }
+
+    .header-text p {
+        font-size: 13px;
+    }
+
+    .add-travel-btn {
+        padding: 8px 14px;
+        font-size: 13px;
+        margin-top: 10px;
+        /* add spacing if stacked */
+    }
+}
+
+@media (max-width: 480px) {
+    .travel-list-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        /* spacing between title and button */
+    }
+
+    .header-text h1 {
+        font-size: 20px;
+    }
+
+    .header-text p {
+        font-size: 12px;
+    }
+
+    .add-travel-btn {
+        width: 100%;
+        /* full width button on small screens */
+        text-align: center;
+        padding: 10px 0;
+    }
+}

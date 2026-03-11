@@ -1,0 +1,111 @@
+/* Event Table */
+.event-table {
+    box-shadow: 0 4px 10px rgba(55, 55, 56, 0.15);
+    width: 100%;
+    margin: 20px 0;
+    padding: 20px;
+    overflow-x: auto;
+    /* horizontal scroll on small screens */
+}
+
+/* Event Row */
+.event-row {
+    display: grid;
+    grid-template-columns: 100px 150px 150px 1fr 80px 200px 120px;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 5px;
+    gap: 10px;
+}
+
+.header {
+    font-weight: bold;
+    color: #12114a;
+}
+
+/* Image Column */
+.table-image {
+    width: 70px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* Description */
+.desc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Action Buttons */
+.actions button {
+    margin-right: 6px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.actions button:first-child {
+    background: #12114a;
+    color: white;
+}
+
+.actions button:last-child {
+    background: #d9534f;
+    color: white;
+}
+
+/* ===== RESPONSIVE STYLES ===== */
+@media (max-width: 992px) {
+    .event-row {
+        grid-template-columns: 80px 120px 120px 1fr 80px 150px 100px;
+        padding: 8px 4px;
+    }
+
+    .table-image {
+        width: 60px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .event-row {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: auto auto auto;
+        row-gap: 8px;
+        padding: 8px;
+    }
+
+    .desc {
+        white-space: normal;
+        /* allow wrapping */
+    }
+
+    .actions button {
+        padding: 4px 8px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .event-row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px;
+        gap: 6px;
+    }
+
+    .table-image {
+        width: 100%;
+        height: 120px;
+    }
+
+    .actions button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+}
