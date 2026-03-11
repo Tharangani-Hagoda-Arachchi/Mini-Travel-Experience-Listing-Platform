@@ -2,7 +2,7 @@ import express from "express";
 import multer from "multer";
 import path from 'path';
 import fs from 'fs';
-import { addTravelEvent, fetchTravelEvents } from "../controllers/travelEvents.controller.js";
+import { addTravelEvent, fetchTravelEventById, fetchTravelEvents } from "../controllers/travelEvents.controller.js";
 import { authenticate, authorizeRoles } from "../midlewares/authentication.midleware.js";
 
 const travelEventRouter = express.Router();
@@ -22,6 +22,9 @@ travelEventRouter.post('/events', authenticate, authorizeRoles("Experience Provi
 
 // featch all travel events
 travelEventRouter.get('/events', fetchTravelEvents);
+
+// featch travel event by id
+travelEventRouter.get('/events/details/:id', fetchTravelEventById);
 
 
 
