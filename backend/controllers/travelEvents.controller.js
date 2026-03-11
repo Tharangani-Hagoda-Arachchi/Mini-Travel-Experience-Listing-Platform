@@ -1,5 +1,5 @@
-import { TravelEvent } from "../models/travelEvents.model";
-import { User } from "../models/user.model";
+import { TravelEvent } from "../models/travelEvents.model.js";
+import { User } from "../models/user.model.js";
 
 //create new travel event
 export const addTravelEvent = async (req, res, next) => {
