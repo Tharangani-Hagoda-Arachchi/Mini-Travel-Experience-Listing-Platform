@@ -54,3 +54,64 @@ export const addTravelEvent = async (req, res, next) => {
         res.status(500).json({ message: "Internal server error", error: error.message });
     }
 };
+
+// fetch all travel events
+export const fetchTravelEvents = async (req, res, next) => {
+    try {
+        
+        //fetch all travel events with user name and sort by created time
+        const travelEvents = await TravelEvent
+            .find()
+            .populate("createdBy", "userFirstName userLastName") // get user name
+            .sort({ createdAt: -1 }); // newest to oldest
+
+        if (!travelEvents || travelEvents.length === 0) {
+            return res.status(404).json({ message: "No travel events found" });
+        }
+
+        // format response
+        const formattedEvents = travelEvents.map(event => {
+
+            const createdTime = new Date(exp.createdAt);
+            const now = new Date();
+
+            const diffMs = now - createdTime;
+            const diffMinutes = Math.floor(diffMs / (1000 * 60));
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+            let postedTime = "";
+
+            if (diffMinutes < 60) {
+                postedTime = `Posted ${diffMinutes} minute(s) ago`;
+            } else if (diffHours < 24) {
+                postedTime = `Posted ${diffHours} hour(s) ago`;
+            } else {
+                postedTime = `Posted ${diffDays} day(s) ago`;
+            }
+
+            return {
+                _id: exp._id,
+                title: exp.title,
+                location: exp.location,
+                description: exp.description,
+                price: exp.price,
+                images: exp.images,
+                createdBy: `${exp.createdBy.userFirstName} ${exp.createdBy.userLastName}`,
+                postedTime
+            };
+        });
+
+        res.status(200).json({
+            status: "Success",
+            message: "Fetch All Travel Events Successfully",
+            data: formattedEvents
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Internal server error",
+            error: error.message
+        });
+    }
+};
