@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Outfit;
+}
+
+body {
+  min-height: 100vh;
+  background-color: white
+}
+
+a {
+  text-emphasis: none;
+  color: inherit;
+}
+
+.app {
+  width: 100%;
+  margin: auto;
+}
+
+/* Tablet devices */
+@media (max-width: 1024px) {
+  .app {
+    width: 90%;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+  .app {
+    width: 95%;
+  }
+  body {
+    font-size: 14px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+
+  .app {
+    width: 100%;
+    padding: 0 10px;
+  }
+  body {
+    font-size: 13px;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+
+}
