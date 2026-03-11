@@ -2,7 +2,7 @@ import express from "express";
 import multer from "multer";
 import path from 'path';
 import fs from 'fs';
-import { addTravelEvent, deleteTravelEvent, fetchTravelEventById, fetchTravelEvents, getEventsByCreatedBy } from "../controllers/travelEvents.controller.js";
+import { addTravelEvent, deleteTravelEvent, fetchTravelEventById, fetchTravelEvents, getEventsByCreatedBy, updateTravelEvent } from "../controllers/travelEvents.controller.js";
 import { authenticate, authorizeRoles } from "../midlewares/authentication.midleware.js";
 
 const travelEventRouter = express.Router();
@@ -31,6 +31,9 @@ travelEventRouter.get('/events/:createdBy', authenticate, authorizeRoles("Experi
 
 //delete travel event by id
 travelEventRouter.delete('/events/:id', authenticate, authorizeRoles("Experience Provider"), deleteTravelEvent);
+
+//update travel event by id
+travelEventRouter.put('/events/:id', authenticate, authorizeRoles("Experience Provider"), updateTravelEvent);
 
 
 

@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import path from "path";
 import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth.route.js';
 import travelEventRouter from './routes/travelEvent.routes.js';
@@ -8,8 +9,16 @@ import travelEventRouter from './routes/travelEvent.routes.js';
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173", //  frontend URL
+  credentials: true,               // allow cookies to be sent
+}));
 app.use(cookieParser());
+
+app.use(
+  "/item-images",
+  express.static(path.join(process.cwd(), "item-images"))
+);
 
 //routes decleration
 app.use("/api/v1/auths",authRouter )

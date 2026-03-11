@@ -234,3 +234,32 @@ export const deleteTravelEvent = async (req, res, next) => {
         res.status(500).json({ message: "Internal server error", error: error.message });
     }
 };
+
+//update travel event by id
+export const updateTravelEvent = async (req, res, next) => {
+    try {
+        const { _id } = req.params;
+        const { title, location, description, price } = req.body;
+
+        // check required field
+        if (!_id) {
+            return res.status(400).json({ message: "Travel event id is Required" });
+        }
+
+        // search for travel experience by id and update
+        const updatedEvent = await TravelEvent.findByIdAndUpdate(_id, { title, location, description, price }, { new: true });
+
+        if (!updatedEvent) {
+            return res.status(404).json({ message: "Travel event not found" });
+        }
+
+        res.status(200).json({
+            status: "Success",
+            message: "Travel Event Updated Successfully",
+            data: updatedEvent
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+};
