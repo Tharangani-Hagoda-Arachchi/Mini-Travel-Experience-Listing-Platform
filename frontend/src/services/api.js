@@ -1,9 +1,7 @@
-
 import axios from "axios";
-const baseURL = import.meta.env.VITE_REACT_APP_BACKEND_BASEURL;
-const API = axios.create({
-    baseURL: baseURL
 
+const API = axios.create({
+  baseURL: import.meta.env.VITE_REACT_APP_BACKEND_BASEURL,
 });
 
 //user signup
@@ -16,7 +14,7 @@ export const signupUser = async (data) => {
             password: data.password,
             role: data.role,
         };
-        const response = await API.post(`/auths/register`, payload, {
+        const response = await API.post(`/api/v1/auths/register`, payload, {
             headers: { "Content-Type": "application/json" }
         });
         return response.data;
@@ -39,7 +37,7 @@ export const signinUser = async (data) => {
             email: data.email,
             password: data.password,
         };
-        const response = await API.post(`/auths/login`, payload, {
+        const response = await API.post(`/api/v1/auths/login`, payload, {
             headers: { "Content-Type": "application/json" },
             withCredentials: true
         });
@@ -57,7 +55,7 @@ export const signinUser = async (data) => {
 // logout
 export const logoutUser = async () => {
     try {
-        const response = await API.post(`/auths/logout`,
+        const response = await API.post(`/api/v1/auths/logout`,
             {},
             { withCredentials: true }
         );
@@ -84,7 +82,7 @@ export const createTravelEvent = async (data, token) => {
             createdBy: data.createdBy,
             image: data.image
         };
-        const response = await API.post(`/events`, payload, {
+        const response = await API.post(`/api/v1/events`, payload, {
 
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -106,7 +104,7 @@ export const createTravelEvent = async (data, token) => {
 // Get all travel experiences
 export const getAllExperiences = async () => {
     try {
-        const response = await API.get('/events', {
+        const response = await API.get('/api/v1/events', {
             headers: { "Content-Type": "application/json", withCredentials: true }
 
         });
@@ -127,7 +125,7 @@ export const getAllExperiences = async () => {
 // Get single travel experience by ID (no auth)
 export const fetchTravelExperienceById = async (id) => {
     try {
-        const response = await API.get(`/events/details/${id}`, {
+        const response = await API.get(`/api/v1/events/details/${id}`, {
             headers: { "Content-Type": "application/json" }
         });
 
@@ -146,7 +144,7 @@ export const fetchTravelExperienceById = async (id) => {
 // Get event by user id (createdBy)
 export const getEventsByCreatedBy = async (userId, token) => {
     try {
-        const res = await API.get(`/events/${userId}`, {
+        const res = await API.get(`/api/v1/events/${userId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -161,7 +159,7 @@ export const getEventsByCreatedBy = async (userId, token) => {
 // // Delete travel experience
 export const deleteTravelExperience = async (id, token) => {
     try {
-        const res = await API.delete(`/events/${id}`, {
+        const res = await API.delete(`/api/v1/events/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -188,7 +186,7 @@ export const updateTravelEvent = async (id, data, imageFile, token) => {
             formData.append('image', imageFile);
         }
 
-        const res = await API.put(`/events/${id}`, formData, {
+        const res = await API.put(`/api/v1/events/${id}`, formData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',
