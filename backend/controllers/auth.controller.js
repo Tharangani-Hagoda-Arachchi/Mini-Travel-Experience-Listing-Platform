@@ -1,6 +1,14 @@
 import bcrypt from "bcrypt";
 import { User } from "../models/user.model.js";
+import { createAccessToken, createRefreshToken } from "../utils/token.utils.js";
 
+const cookieOptions = {
+    httpOnly: true,
+    sameSite: 'strict',
+    path: '/',
+};
+
+//user registration logic
 export const registerUser = async (req, res, next) => {
     try {
         const { userFirstName, userLastName, email, password, role } = req.body;
@@ -38,4 +46,45 @@ export const registerUser = async (req, res, next) => {
     }
 
 
+}
+
+//user login logic
+export const userLogin = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+
+        //check all field are fill
+        if (!email || !password) {
+            return res.status(400).json({ message: "email and passwod are required" });
+        }
+
+        //check email is registered
+        const existingEmail = await User.findOne({ email: email })
+        if (!existingEmail) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        //match password
+        const matchedPassword = await bcrypt.compare(password, existingEmail.password);
+        if (!matchedPassword) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        //crreate tokens
+        const payload = { id: existingEmail._id, userFirstName: existingEmail.userFirstName, userLastName: existingEmail.userLastName, role: existingEmail.role }
+        const accessToken = createAccessToken(payload, process.env.ACCESS_SCRET, process.env.ACCESS_EXPIREIN || '15m')
+        const RefreshToken = createRefreshToken(payload, process.env.REFRESH_SCRET, process.env.REFRESH_EXPIREIN || '7d')
+
+        //save refresh token
+        existingEmail.refreshToken.push(RefreshToken)
+        await existingEmail.save()
+
+        // send refresh token as htttpOnly cookie
+        res.cookie('refreshToken', RefreshToken, { ...cookieOptions, maxAge: 7 * 24 * 60 * 60 * 1000 })
+
+        res.status(200).json({ message: "Login successfully", accessToken, })
+
+    } catch (error) {
+        res.status(500).json({ message: "internal server Error", error: error.message })
+    }
 }
