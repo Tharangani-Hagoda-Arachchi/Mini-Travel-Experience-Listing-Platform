@@ -58,7 +58,7 @@ export const addTravelEvent = async (req, res, next) => {
 // fetch all travel events
 export const fetchTravelEvents = async (req, res, next) => {
     try {
-        
+
         //fetch all travel events with user name and sort by created time
         const travelEvents = await TravelEvent
             .find()
@@ -171,5 +171,32 @@ export const fetchTravelEventById = async (req, res, next) => {
             message: "Internal server error",
             error: error.message
         });
+    }
+};
+
+//fetch travel event by created user id
+export const getEventsByCreatedBy = async (req, res, next) => {
+    try {
+        const { createdBy } = req.params;
+        // check required field
+        if (!createdBy) {
+            return res.status(400).json({ message: "Created person id is Required" });
+        }
+
+        // search for travel events belong to createdBy id
+        const eventsByCreatedBy = await TravelEvent.find({ createdBy });
+
+        if (eventsByCreatedBy.length === 0) {
+            return res.status(404).json({ message: "No travel events found for the specified user" });
+        }
+
+        res.status(200).json({
+            status: "Success",
+            message: "Fetch Travel Events Successfully",
+            data: eventsByCreatedBy
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error", error: error.message });
     }
 };
