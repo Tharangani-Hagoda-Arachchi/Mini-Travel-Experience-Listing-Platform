@@ -10,7 +10,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-  origin: "http://localhost:5173", //  frontend URL
+  origin: "https://mini-travel-experience-listing-plat-wheat.vercel.app", //  frontend URL
   credentials: true,               // allow cookies to be sent
 }));
 app.use(cookieParser());
