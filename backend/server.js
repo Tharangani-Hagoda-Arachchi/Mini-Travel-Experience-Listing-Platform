@@ -9,14 +9,24 @@ const app = express();
 
 import cors from "cors";
 
-app.use(cors({
-  origin: "https://mini-travel-experience-listing-plat-pearl.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
+
 
 app.use(express.json());
 app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: "https://mini-travel-experience-listing-platform-x881-n8nikz66a.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 app.use(
   "/item-images",
