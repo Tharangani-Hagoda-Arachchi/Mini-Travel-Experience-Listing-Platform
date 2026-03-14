@@ -7,14 +7,8 @@ import { authenticate, authorizeRoles } from "../midlewares/authentication.midle
 
 const travelEventRouter = express.Router();
 
-// Multer setup with automatic folder creation
-const uploadFolder = path.join(process.cwd(), 'item-images');
-if (!fs.existsSync(uploadFolder)) fs.mkdirSync(uploadFolder, { recursive: true });
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, uploadFolder),
-    filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
-});
+// Use memory storage instead of disk storage
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 //create new travel event route

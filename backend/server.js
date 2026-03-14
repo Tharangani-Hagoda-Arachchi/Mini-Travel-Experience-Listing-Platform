@@ -7,17 +7,7 @@ import travelEventRouter from "./routes/travelEvent.routes.js";
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://mini-travel-experience-listing-plat-pearl.vercel.app"
-];
 
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
-}));
-
-app.options("*", cors());
 
 app.use(express.json());
 app.use(cookieParser());
